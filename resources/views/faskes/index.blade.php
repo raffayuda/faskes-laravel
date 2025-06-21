@@ -29,7 +29,9 @@
             </div>
             @endif
         </div>
-    </div>    <!-- Filters Section -->
+    </div>
+
+    <!-- Filters Section -->
     <div class="bg-white rounded-xl shadow-lg p-6 border border-gray-200">
         <div x-data="{ showFilters: false }">
             <button @click="showFilters = !showFilters" 
@@ -44,87 +46,40 @@
                  x-transition:enter="transition ease-out duration-300"
                  x-transition:enter-start="opacity-0 transform scale-95"
                  x-transition:enter-end="opacity-100 transform scale-100"
-                 class="mt-4">
+                 class="mt-4 grid grid-cols-1 md:grid-cols-4 gap-4">
                 
-                <form method="GET" action="{{ route('faskes.index') }}" class="grid grid-cols-1 md:grid-cols-4 gap-4">
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">Pencarian</label>
-                        <input type="text" 
-                               name="search"
-                               value="{{ request('search') }}"
-                               placeholder="Cari nama faskes..."
-                               class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
-                    </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Pencarian</label>
+                    <input type="text" 
+                           placeholder="Cari nama faskes..."
+                           class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                </div>
 
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">Provinsi</label>
-                        <select name="provinsi_id" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
-                            <option value="">Semua Provinsi</option>
-                            @foreach($provinsiList as $provinsi)
-                                <option value="{{ $provinsi->id }}" {{ request('provinsi_id') == $provinsi->id ? 'selected' : '' }}>
-                                    {{ $provinsi->nama }}
-                                </option>
-                            @endforeach
-                        </select>
-                    </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Provinsi</label>
+                    <select class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                        <option value="">Semua Provinsi</option>
+                        <!-- Options will be populated dynamically -->
+                    </select>
+                </div>
 
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">Jenis Faskes</label>
-                        <select name="jenis_faskes_id" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
-                            <option value="">Semua Jenis</option>
-                            @foreach($jenisFaskesList as $jenis)
-                                <option value="{{ $jenis->id }}" {{ request('jenis_faskes_id') == $jenis->id ? 'selected' : '' }}>
-                                    {{ $jenis->nama }}
-                                </option>
-                            @endforeach
-                        </select>
-                    </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Jenis Faskes</label>
+                    <select class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                        <option value="">Semua Jenis</option>
+                        <!-- Options will be populated dynamically -->
+                    </select>
+                </div>
 
-                    <div class="flex items-end space-x-2">
-                        <button type="submit" class="flex-1 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors duration-200">
-                            <i class="fas fa-search mr-2"></i>
-                            Cari
-                        </button>
-                        @if(request()->hasAny(['search', 'provinsi_id', 'jenis_faskes_id']))
-                            <a href="{{ route('faskes.index') }}" 
-                               class="px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors duration-200">
-                                <i class="fas fa-times"></i>
-                            </a>
-                        @endif
-                    </div>
-                </form>
+                <div class="flex items-end">
+                    <button class="w-full px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors duration-200">
+                        <i class="fas fa-search mr-2"></i>
+                        Cari
+                    </button>
+                </div>
             </div>
-        </div>    </div>
-
-    <!-- Search Results Info -->
-    @if(request()->hasAny(['search', 'provinsi_id', 'jenis_faskes_id']))
-    <div class="bg-blue-50 border border-blue-200 rounded-lg p-4">
-        <div class="flex items-center justify-between">
-            <div class="flex items-center">
-                <i class="fas fa-info-circle text-blue-500 mr-2"></i>
-                <span class="text-sm text-blue-700">
-                    Menampilkan {{ $faskes->total() }} hasil
-                    @if(request('search'))
-                        untuk pencarian "<strong>{{ request('search') }}</strong>"
-                    @endif
-                    @if(request('provinsi_id'))
-                        @php $selectedProvinsi = $provinsiList->where('id', request('provinsi_id'))->first(); @endphp
-                        di <strong>{{ $selectedProvinsi->nama ?? 'Provinsi' }}</strong>
-                    @endif
-                    @if(request('jenis_faskes_id'))
-                        @php $selectedJenis = $jenisFaskesList->where('id', request('jenis_faskes_id'))->first(); @endphp
-                        dengan jenis <strong>{{ $selectedJenis->nama ?? 'Jenis Faskes' }}</strong>
-                    @endif
-                </span>
-            </div>
-            <a href="{{ route('faskes.index') }}" 
-               class="text-blue-600 hover:text-blue-800 text-sm font-medium">
-                <i class="fas fa-times mr-1"></i>
-                Hapus Filter
-            </a>
         </div>
     </div>
-    @endif
 
     <!-- Data Table -->
     <div class="bg-white rounded-xl shadow-lg border border-gray-200 overflow-hidden">
@@ -136,43 +91,19 @@
                             Foto
                         </th>
                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            <a href="{{ route('faskes.index', array_merge(request()->all(), ['sort' => 'nama', 'direction' => request('sort') == 'nama' && request('direction') == 'asc' ? 'desc' : 'asc'])) }}" 
-                               class="flex items-center hover:text-gray-700">
-                                Nama Faskes
-                                @if(request('sort') == 'nama')
-                                    <i class="fas fa-sort-{{ request('direction') == 'asc' ? 'up' : 'down' }} ml-1"></i>
-                                @else
-                                    <i class="fas fa-sort ml-1 text-gray-400"></i>
-                                @endif
-                            </a>
+                            Nama Faskes
                         </th>
                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                             Lokasi
                         </th>
                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            <a href="{{ route('faskes.index', array_merge(request()->all(), ['sort' => 'jenis_faskes_id', 'direction' => request('sort') == 'jenis_faskes_id' && request('direction') == 'asc' ? 'desc' : 'asc'])) }}" 
-                               class="flex items-center hover:text-gray-700">
-                                Jenis & Kategori
-                                @if(request('sort') == 'jenis_faskes_id')
-                                    <i class="fas fa-sort-{{ request('direction') == 'asc' ? 'up' : 'down' }} ml-1"></i>
-                                @else
-                                    <i class="fas fa-sort ml-1 text-gray-400"></i>
-                                @endif
-                            </a>
+                            Jenis & Kategori
                         </th>
                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                             Kontak
                         </th>
                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            <a href="{{ route('faskes.index', array_merge(request()->all(), ['sort' => 'created_at', 'direction' => request('sort') == 'created_at' && request('direction') == 'asc' ? 'desc' : 'asc'])) }}" 
-                               class="flex items-center hover:text-gray-700">
-                                Aksi
-                                @if(request('sort') == 'created_at')
-                                    <i class="fas fa-sort-{{ request('direction') == 'asc' ? 'up' : 'down' }} ml-1"></i>
-                                @else
-                                    <i class="fas fa-sort ml-1 text-gray-400"></i>
-                                @endif
-                            </a>
+                            Aksi
                         </th>
                     </tr>
                 </thead>

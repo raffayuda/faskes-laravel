@@ -109,14 +109,7 @@
                 </p>
             </div>
 
-            <!-- Demo Accounts -->
-            <div class="mt-8 p-4 bg-gray-50 rounded-lg">
-                <p class="text-sm font-medium text-gray-700 mb-2">Demo Accounts:</p>
-                <div class="text-xs text-gray-600 space-y-1">
-                    <p><strong>Admin:</strong> admin@test.com / password</p>
-                    <p><strong>User:</strong> user@test.com / password</p>
-                </div>
-            </div>
+            
         </div>
 
         <!-- Footer -->
