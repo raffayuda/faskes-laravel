@@ -17,7 +17,6 @@ class KabkotaController extends Controller
         if ($request->filled('search')) {
             $search = $request->search;
             $query->where('nama', 'like', "%{$search}%")
-                  ->orWhere('ibukota', 'like', "%{$search}%")
                   ->orWhereHas('provinsi', function($q) use ($search) {
                       $q->where('nama', 'like', "%{$search}%");
                   });
@@ -32,7 +31,7 @@ class KabkotaController extends Controller
         $sortField = $request->get('sort', 'nama');
         $sortDirection = $request->get('direction', 'asc');
         
-        if (in_array($sortField, ['nama', 'ibukota', 'created_at'])) {
+        if (in_array($sortField, ['nama', 'created_at'])) {
             $query->orderBy($sortField, $sortDirection);
         } else {
             $query->orderBy('nama', 'asc');

@@ -61,14 +61,11 @@
                 <div>
                     <label for="sort" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                         Urutkan
-                    </label>
-                    <select name="sort" 
+                    </label>                    <select name="sort" 
                             id="sort"
                             class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white">
                         <option value="nama" {{ request('sort') == 'nama' ? 'selected' : '' }}>Nama A-Z</option>
                         <option value="nama" {{ request('sort') == 'nama' && request('direction') == 'desc' ? 'selected' : '' }}>Nama Z-A</option>
-                        <option value="ibukota" {{ request('sort') == 'ibukota' ? 'selected' : '' }}>Ibukota A-Z</option>
-                        <option value="ibukota" {{ request('sort') == 'ibukota' && request('direction') == 'desc' ? 'selected' : '' }}>Ibukota Z-A</option>
                         <option value="created_at" {{ request('sort') == 'created_at' ? 'selected' : '' }}>Terbaru</option>
                         <option value="created_at" {{ request('sort') == 'created_at' && request('direction') == 'desc' ? 'selected' : '' }}>Terlama</option>
                     </select>
