@@ -12,14 +12,16 @@ use App\Http\Controllers\KategoriController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\FavoriteController;
 use App\Http\Controllers\ProfileController;
+use App\Livewire\Home;
+use App\Livewire\Tentang;
+
+// Landing Page Routes (accessible to everyone)
+Route::get('/', Home::class)->name('landing.home');
+Route::get('/tentang', Tentang::class)->name('landing.tentang');
 
 
-// Guest Routes
+// Auth Routes
 Route::middleware('guest')->group(function () {
-    Route::get('/', function () {
-        return redirect('/login');
-    });
-    
     Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
     Route::post('/login', [AuthController::class, 'login']);
     

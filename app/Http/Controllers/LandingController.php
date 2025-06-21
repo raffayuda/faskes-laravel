@@ -10,7 +10,7 @@ use App\Models\Kategori;
 
 class LandingController extends Controller
 {
-    public function home()
+    public function index()
     {
         $totalFaskes = Faskes::count();
         $totalProvinsi = Provinsi::count();
@@ -68,5 +68,51 @@ class LandingController extends Controller
         $jenisFaskes = JenisFaskes::all();
 
         return view('landing.search', compact('faskes', 'provinsis', 'jenisFaskes'));
+    }
+
+    public function faq()
+    {
+        $faqs = [
+            [
+                'question' => 'Apa itu Faskes Indonesia?',
+                'answer' => 'Faskes Indonesia adalah platform digital yang menyediakan informasi lengkap tentang fasilitas kesehatan di seluruh Indonesia. Platform ini membantu masyarakat untuk menemukan fasilitas kesehatan terdekat dan mendapatkan informasi yang akurat.'
+            ],
+            [
+                'question' => 'Bagaimana cara menggunakan platform ini?',
+                'answer' => 'Anda dapat menggunakan fitur pencarian untuk menemukan fasilitas kesehatan berdasarkan lokasi, jenis, atau kategori. Setelah mendaftar, Anda juga dapat menyimpan fasilitas favorit dan mengakses fitur-fitur tambahan.'
+            ],
+            [
+                'question' => 'Apakah data yang disediakan akurat?',
+                'answer' => 'Kami berkomitmen untuk menyediakan data yang akurat dan selalu ter-update. Data bersumber dari instansi resmi dan diverifikasi secara berkala oleh tim kami.'
+            ],
+            [
+                'question' => 'Bagaimana cara melaporkan informasi yang tidak akurat?',
+                'answer' => 'Anda dapat menghubungi kami melalui halaman kontak atau email support@faskes-indonesia.id untuk melaporkan informasi yang tidak akurat. Tim kami akan segera memverifikasi dan memperbaiki data.'
+            ],
+            [
+                'question' => 'Apakah ada biaya untuk menggunakan layanan ini?',
+                'answer' => 'Kami menyediakan paket gratis dengan fitur dasar. Untuk akses fitur lengkap dan layanan premium, tersedia paket berbayar dengan harga yang terjangkau.'
+            ]
+        ];
+
+        return view('landing.faq', compact('faqs'));
+    }
+
+    public function submitContact(Request $request)
+    {
+        $request->validate([
+            'first_name' => 'required|string|max:255',
+            'last_name' => 'required|string|max:255',
+            'email' => 'required|email|max:255',
+            'phone' => 'nullable|string|max:20',
+            'subject' => 'required|string',
+            'message' => 'required|string|max:2000',
+            'privacy' => 'required|accepted',
+        ]);
+
+        // Here you would typically send an email or save to database
+        // For now, we'll just return a success message
+        
+        return back()->with('success', 'Terima kasih! Pesan Anda telah berhasil dikirim. Tim kami akan segera menghubungi Anda.');
     }
 }

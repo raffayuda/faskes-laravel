@@ -14,10 +14,12 @@
     
     <!-- Alpine.js -->
     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
-    
-    <!-- AOS Animation -->
+      <!-- AOS Animation -->
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    
+    <!-- Livewire Styles -->
+    @livewireStyles
 
     <script>
         tailwind.config = {
@@ -214,13 +216,14 @@
                 <p>&copy; {{ date('Y') }} Sistem Informasi Faskes. All rights reserved.</p>
             </div>
         </div>
-    </footer>
-
-    <script>
+    </footer>    <script>
         AOS.init({
             duration: 1000,
             once: true
         });
     </script>
+    
+    <!-- Livewire Scripts -->
+    @livewireScripts
 </body>
 </html>
