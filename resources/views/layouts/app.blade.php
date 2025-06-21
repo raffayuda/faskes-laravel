@@ -50,17 +50,22 @@
                        class="flex items-center px-4 py-2 text-gray-700 dark:text-gray-200 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200 {{ request()->routeIs('faskes.*') ? 'bg-primary-50 dark:bg-primary-900 text-primary-700 dark:text-primary-300' : '' }}">
                         <i class="fas fa-hospital w-5 h-5 mr-3"></i>
                         Data Faskes
-                    </a>                    <a href="{{ route('favorites.index') }}" 
+                    </a>
+                    @if(auth()->check() && auth()->user()->role == 'user')
+                    <a href="{{ route('favorites.index') }}" 
                        class="flex items-center px-4 py-2 text-gray-700 dark:text-gray-200 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200 {{ request()->routeIs('favorites.*') ? 'bg-primary-50 dark:bg-primary-900 text-primary-700 dark:text-primary-300' : '' }}">
                         <i class="fas fa-heart w-5 h-5 mr-3"></i>
                         Faskes Favorit
                     </a>
-
+                    @endif
+                    @if(auth()->check() && auth()->user()->role == 'user')
                     <a href="{{ route('profile.edit') }}" 
                        class="flex items-center px-4 py-2 text-gray-700 dark:text-gray-200 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200 {{ request()->routeIs('profile.*') ? 'bg-primary-50 dark:bg-primary-900 text-primary-700 dark:text-primary-300' : '' }}">
                         <i class="fas fa-user-edit w-5 h-5 mr-3"></i>
                         Ubah Profile
-                    </a>                    @if(auth()->check() && auth()->user()->role === 'admin')
+                    </a>
+                    @endif        
+                    @if(auth()->check() && auth()->user()->role === 'admin')
                     <div class="pt-4 mt-4 border-t border-gray-200 dark:border-gray-600">
                         <p class="px-4 text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider">
                             Master Data
@@ -134,12 +139,7 @@
                     </div>
 
                     <div class="flex items-center space-x-4">
-                        <!-- Dark Mode Toggle -->
-                        <button @click="darkMode = !darkMode" 
-                                class="p-2 text-gray-500 dark:text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700">
-                            <i x-show="!darkMode" class="fas fa-moon w-5 h-5"></i>
-                            <i x-show="darkMode" class="fas fa-sun w-5 h-5"></i>
-                        </button>
+                        
 
                         <!-- User Menu -->
                         <div x-data="{ userMenuOpen: false }" class="relative">
@@ -167,11 +167,6 @@
                                 <div class="px-4 py-2 text-sm text-gray-500 dark:text-gray-400 border-b border-gray-200 dark:border-gray-700">
                                     Role: <span class="font-medium text-primary-600">{{ ucfirst(auth()->user()->role) }}</span>
                                 </div>
-                                
-                                <a href="#" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700">
-                                    <i class="fas fa-user w-4 h-4 mr-2"></i>
-                                    Profile
-                                </a>
                                 
                                 <form method="POST" action="{{ route('logout') }}">
                                     @csrf
