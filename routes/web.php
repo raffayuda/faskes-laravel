@@ -11,6 +11,7 @@ use App\Http\Controllers\JenisFaskesController;
 use App\Http\Controllers\KategoriController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\FavoriteController;
+use App\Http\Controllers\ProfileController;
 
 
 // Guest Routes
@@ -40,6 +41,11 @@ Route::middleware('auth')->group(function () {
     Route::get('/favorites', [FavoriteController::class, 'index'])->name('favorites.index');
     Route::post('/favorites/{faskes}/toggle', [FavoriteController::class, 'toggle'])->name('favorites.toggle');
     Route::delete('/favorites/{faskes}', [FavoriteController::class, 'destroy'])->name('favorites.destroy');
+    
+    // Profile Features
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::patch('/profile/password', [ProfileController::class, 'updatePassword'])->name('profile.password');
     
     // Admin Only Routes
     Route::middleware('admin')->group(function () {
