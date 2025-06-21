@@ -40,6 +40,7 @@ class FaskesController extends Controller
 
         $validated = $request->validate([
             'nama' => 'required|string|max:100',
+            'foto' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'nama_pengelola' => 'nullable|string|max:45',
             'alamat' => 'nullable|string|max:100',
             'website' => 'nullable|string|max:45',
@@ -51,6 +52,14 @@ class FaskesController extends Controller
             'jenis_faskes_id' => 'nullable|exists:jenis_faskes,id',
             'kategori_id' => 'nullable|exists:kategori,id',
         ]);
+
+        // Handle file upload
+        if ($request->hasFile('foto')) {
+            $foto = $request->file('foto');
+            $filename = time() . '_' . $foto->getClientOriginalName();
+            $foto->move(public_path('uploads/faskes'), $filename);
+            $validated['foto'] = $filename;
+        }
 
         Faskes::create($validated);
 
@@ -84,6 +93,7 @@ class FaskesController extends Controller
 
         $validated = $request->validate([
             'nama' => 'required|string|max:100',
+            'foto' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'nama_pengelola' => 'nullable|string|max:45',
             'alamat' => 'nullable|string|max:100',
             'website' => 'nullable|string|max:45',
@@ -95,6 +105,19 @@ class FaskesController extends Controller
             'jenis_faskes_id' => 'nullable|exists:jenis_faskes,id',
             'kategori_id' => 'nullable|exists:kategori,id',
         ]);
+
+        // Handle file upload
+        if ($request->hasFile('foto')) {
+            // Delete old photo if exists
+            if ($faskes->foto && file_exists(public_path('uploads/faskes/' . $faskes->foto))) {
+                unlink(public_path('uploads/faskes/' . $faskes->foto));
+            }
+            
+            $foto = $request->file('foto');
+            $filename = time() . '_' . $foto->getClientOriginalName();
+            $foto->move(public_path('uploads/faskes'), $filename);
+            $validated['foto'] = $filename;
+        }
 
         $faskes->update($validated);
 

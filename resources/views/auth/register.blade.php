@@ -42,9 +42,7 @@
                                 <i class="fas fa-exclamation-circle mr-1"></i>{{ $message }}
                             </p>
                         @enderror
-                    </div>
-
-                    <!-- Email -->
+                    </div>                    <!-- Email -->
                     <div>
                         <label for="email" class="block text-sm font-medium text-gray-700 mb-2">
                             <i class="fas fa-envelope mr-2"></i>Email
@@ -57,26 +55,6 @@
                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200 @error('email') border-red-500 @enderror"
                                placeholder="Masukkan email">
                         @error('email')
-                            <p class="mt-2 text-sm text-red-600">
-                                <i class="fas fa-exclamation-circle mr-1"></i>{{ $message }}
-                            </p>
-                        @enderror
-                    </div>
-
-                    <!-- Role -->
-                    <div>
-                        <label for="role" class="block text-sm font-medium text-gray-700 mb-2">
-                            <i class="fas fa-user-tag mr-2"></i>Role
-                        </label>
-                        <select id="role" 
-                                name="role" 
-                                required
-                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200 @error('role') border-red-500 @enderror">
-                            <option value="">Pilih Role</option>
-                            <option value="user" {{ old('role') == 'user' ? 'selected' : '' }}>User</option>
-                            <option value="admin" {{ old('role') == 'admin' ? 'selected' : '' }}>Admin</option>
-                        </select>
-                        @error('role')
                             <p class="mt-2 text-sm text-red-600">
                                 <i class="fas fa-exclamation-circle mr-1"></i>{{ $message }}
                             </p>

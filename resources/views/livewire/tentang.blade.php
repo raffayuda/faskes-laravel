@@ -276,9 +276,9 @@
                     Mari bersama-sama membangun masa depan kesehatan Indonesia yang lebih baik melalui teknologi digital yang inovatif dan terintegrasi.
                 </p>
                 <div class="flex flex-col sm:flex-row gap-4 justify-center">
-                    <button class="bg-white text-blue-600 hover:bg-gray-100 px-8 py-4 rounded-lg font-semibold text-lg transition duration-300 transform hover:scale-105 shadow-lg">
+                    <a href="/login" class="bg-white text-blue-600 hover:bg-gray-100 px-8 py-4 rounded-lg font-semibold text-lg transition duration-300 transform hover:scale-105 shadow-lg">
                         Mulai Sekarang
-                    </button>
+                    </a>
                     <button class="border-2 border-white text-white hover:bg-white hover:text-blue-600 px-8 py-4 rounded-lg font-semibold text-lg transition duration-300">
                         Pelajari Lebih Lanjut
                     </button>

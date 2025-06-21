@@ -13,11 +13,15 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\FavoriteController;
 use App\Http\Controllers\ProfileController;
 use App\Livewire\Home;
+use App\Livewire\Layanan;
 use App\Livewire\Tentang;
+use App\Livewire\Kontak;
 
 // Landing Page Routes (accessible to everyone)
 Route::get('/', Home::class)->name('landing.home');
 Route::get('/tentang', Tentang::class)->name('landing.tentang');
+Route::get('/layanan', Layanan::class)->name('landing.layanan');
+Route::get('/kontak', Kontak::class)->name('landing.kontak');
 
 
 // Auth Routes

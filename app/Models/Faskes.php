@@ -13,6 +13,7 @@ class Faskes extends Model
 
     protected $fillable = [
         'nama',
+        'foto',
         'nama_pengelola',
         'alamat',
         'website',

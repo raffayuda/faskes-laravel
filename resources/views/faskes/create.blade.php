@@ -17,10 +17,8 @@
                 <p class="text-gray-600 dark:text-gray-400">Lengkapi informasi fasilitas kesehatan</p>
             </div>
         </div>
-    </div>
-
-    <!-- Form -->
-    <form method="POST" action="{{ route('faskes.store') }}" class="space-y-6">
+    </div>    <!-- Form -->
+    <form method="POST" action="{{ route('faskes.store') }}" enctype="multipart/form-data" class="space-y-6">
         @csrf
         
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -33,8 +31,7 @@
                         Informasi Dasar
                     </h2>
 
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <!-- Nama Faskes -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">                        <!-- Nama Faskes -->
                         <div class="md:col-span-2">
                             <label for="nama" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                                 Nama Faskes <span class="text-red-500">*</span>
@@ -49,6 +46,32 @@
                             @error('nama')
                                 <p class="mt-2 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
                             @enderror
+                        </div>
+
+                        <!-- Upload Foto -->
+                        <div class="md:col-span-2">
+                            <label for="foto" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                Foto Faskes
+                            </label>
+                            <div class="relative">
+                                <input type="file" 
+                                       id="foto" 
+                                       name="foto" 
+                                       accept="image/*"
+                                       class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
+                                       onchange="previewImage(this)">
+                                <div class="mt-2 text-xs text-gray-500 dark:text-gray-400">
+                                    Format: JPG, JPEG, PNG. Maksimal 2MB.
+                                </div>
+                            </div>
+                            @error('foto')
+                                <p class="mt-2 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
+                            @enderror
+                            
+                            <!-- Preview Image -->
+                            <div id="imagePreview" class="mt-4 hidden">
+                                <img id="preview" src="" alt="Preview" class="w-32 h-32 object-cover rounded-lg border-2 border-gray-300 dark:border-gray-600">
+                            </div>
                         </div>
 
                         <!-- Nama Pengelola -->
@@ -311,7 +334,26 @@
                     </div>
                 </div>
             </div>
-        </div>
-    </form>
+        </div>    </form>
 </div>
+
+<script>
+function previewImage(input) {
+    const preview = document.getElementById('preview');
+    const previewContainer = document.getElementById('imagePreview');
+    
+    if (input.files && input.files[0]) {
+        const reader = new FileReader();
+        
+        reader.onload = function(e) {
+            preview.src = e.target.result;
+            previewContainer.classList.remove('hidden');
+        }
+        
+        reader.readAsDataURL(input.files[0]);
+    } else {
+        previewContainer.classList.add('hidden');
+    }
+}
+</script>
 @endsection

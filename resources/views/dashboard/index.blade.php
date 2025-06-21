@@ -72,49 +72,7 @@
         </div>
     </div>
 
-    <!-- Quick Actions (Admin Only) -->
-    @if(auth()->user()->role === 'admin')
-    <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 border border-gray-200 dark:border-gray-700">
-        <h2 class="text-xl font-bold text-gray-900 dark:text-white mb-4">
-            <i class="fas fa-bolt mr-2 text-yellow-500"></i>
-            Quick Actions
-        </h2>
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <a href="{{ route('faskes.create') }}" 
-               class="flex items-center p-4 bg-blue-50 dark:bg-blue-900 rounded-lg hover:bg-blue-100 dark:hover:bg-blue-800 transition-colors duration-200">
-                <div class="p-2 bg-blue-500 rounded-lg">
-                    <i class="fas fa-plus text-white"></i>
-                </div>
-                <div class="ml-3">
-                    <p class="text-sm font-medium text-blue-700 dark:text-blue-300">Tambah Faskes</p>
-                    <p class="text-xs text-blue-600 dark:text-blue-400">Buat data faskes baru</p>
-                </div>
-            </a>
-
-            <a href="#" 
-               class="flex items-center p-4 bg-green-50 dark:bg-green-900 rounded-lg hover:bg-green-100 dark:hover:bg-green-800 transition-colors duration-200">
-                <div class="p-2 bg-green-500 rounded-lg">
-                    <i class="fas fa-file-import text-white"></i>
-                </div>
-                <div class="ml-3">
-                    <p class="text-sm font-medium text-green-700 dark:text-green-300">Import Data</p>
-                    <p class="text-xs text-green-600 dark:text-green-400">Upload file CSV/Excel</p>
-                </div>
-            </a>
-
-            <a href="#" 
-               class="flex items-center p-4 bg-purple-50 dark:bg-purple-900 rounded-lg hover:bg-purple-100 dark:hover:bg-purple-800 transition-colors duration-200">
-                <div class="p-2 bg-purple-500 rounded-lg">
-                    <i class="fas fa-chart-bar text-white"></i>
-                </div>
-                <div class="ml-3">
-                    <p class="text-sm font-medium text-purple-700 dark:text-purple-300">Laporan</p>
-                    <p class="text-xs text-purple-600 dark:text-purple-400">Lihat statistik lengkap</p>
-                </div>
-            </a>
-        </div>
-    </div>
-    @endif
+    
 
     <!-- Recent Faskes -->
     <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700">

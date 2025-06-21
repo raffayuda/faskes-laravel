@@ -148,10 +148,23 @@
                 </div>
             </div>
             @endif
-        </div>
-
-        <!-- Sidebar -->
+        </div>        <!-- Sidebar -->
         <div class="space-y-6">
+            <!-- Foto Faskes -->
+            @if($faskes->foto)
+            <div class="bg-white rounded-xl shadow-lg p-6 border border-gray-200">
+                <h3 class="text-lg font-bold text-gray-900 mb-4">
+                    <i class="fas fa-image mr-2 text-purple-500"></i>
+                    Foto Faskes
+                </h3>
+                <div class="aspect-w-16 aspect-h-9">
+                    <img src="{{ asset('uploads/faskes/' . $faskes->foto) }}" 
+                         alt="Foto {{ $faskes->nama }}" 
+                         class="w-full h-48 object-cover rounded-lg border-2 border-gray-200">
+                </div>
+            </div>
+            @endif
+
             <!-- Location Info -->
             <div class="bg-white rounded-xl shadow-lg p-6 border border-gray-200">
                 <h3 class="text-lg font-bold text-gray-900 mb-4">
@@ -223,30 +236,7 @@
                 </div>
             </div>
 
-            <!-- Actions -->
-            <div class="bg-white rounded-xl shadow-lg p-6 border border-gray-200">
-                <h3 class="text-lg font-bold text-gray-900 mb-4">
-                    <i class="fas fa-cog mr-2 text-gray-500"></i>
-                    Aksi
-                </h3>
-
-                <div class="space-y-2">
-                    <button class="w-full text-left px-3 py-2 text-gray-700 hover:bg-gray-100 rounded-lg">
-                        <i class="fas fa-share mr-2"></i>
-                        Bagikan
-                    </button>
-
-                    <button class="w-full text-left px-3 py-2 text-gray-700 hover:bg-gray-100 rounded-lg">
-                        <i class="fas fa-print mr-2"></i>
-                        Cetak
-                    </button>
-
-                    <button class="w-full text-left px-3 py-2 text-gray-700 hover:bg-gray-100 rounded-lg">
-                        <i class="fas fa-download mr-2"></i>
-                        Download PDF
-                    </button>
-                </div>
-            </div>
+           
         </div>
     </div>
 </div>

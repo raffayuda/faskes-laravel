@@ -85,9 +85,11 @@
     <div class="bg-white rounded-xl shadow-lg border border-gray-200 overflow-hidden">
         @if($faskes->count() > 0)
         <div class="overflow-x-auto">
-            <table class="w-full">
-                <thead class="bg-gray-50">
+            <table class="w-full">                <thead class="bg-gray-50">
                     <tr>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            Foto
+                        </th>
                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                             Nama Faskes
                         </th>
@@ -105,9 +107,25 @@
                         </th>
                     </tr>
                 </thead>
-                <tbody class="bg-white divide-y divide-gray-200">
-                    @foreach($faskes as $item)
+                <tbody class="bg-white divide-y divide-gray-200">                    @foreach($faskes as $item)
                     <tr class="hover:bg-gray-50">
+                        <!-- Foto -->
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <div class="flex-shrink-0 h-16 w-16">
+                                @if($item->foto)
+                                    <img class="h-16 w-16 rounded-lg object-cover border-2 border-gray-200" 
+                                         src="{{ asset('uploads/faskes/' . $item->foto) }}" 
+                                         alt="Foto {{ $item->nama }}"
+                                         title="{{ $item->nama }}">
+                                @else
+                                    <div class="h-16 w-16 rounded-lg bg-gray-200 flex items-center justify-center">
+                                        <i class="fas fa-hospital text-gray-400 text-xl"></i>
+                                    </div>
+                                @endif
+                            </div>
+                        </td>
+                        
+                        <!-- Nama Faskes -->
                         <td class="px-6 py-4">
                             <div class="space-y-1">
                                 <div class="text-sm font-medium text-gray-900">
@@ -116,6 +134,14 @@
                                 @if($item->nama_pengelola)
                                     <div class="text-sm text-gray-500">
                                         {{ $item->nama_pengelola }}
+                                    </div>
+                                @endif
+                                @if($item->rating)
+                                    <div class="flex items-center space-x-1">
+                                        @for($i = 1; $i <= 5; $i++)
+                                            <i class="fas fa-star text-xs {{ $i <= $item->rating ? 'text-yellow-400' : 'text-gray-300' }}"></i>
+                                        @endfor
+                                        <span class="text-xs text-gray-500">({{ $item->rating }})</span>
                                     </div>
                                 @endif
                             </div>
