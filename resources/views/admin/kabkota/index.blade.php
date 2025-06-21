@@ -18,30 +18,80 @@
                 Tambah Kabupaten/Kota
             </a>
         </div>
-    </div>
-
-    <!-- Search and Filter -->
+    </div>    <!-- Search and Filter -->
     <div class="p-6 border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-700/50">
-        <div class="flex flex-col sm:flex-row gap-4">
-            <div class="flex-1">
-                <label for="search" class="sr-only">Cari kabupaten/kota</label>
-                <div class="relative">
-                    <input type="text" 
-                           id="search" 
-                           placeholder="Cari nama kabupaten/kota..." 
-                           class="w-full pl-10 pr-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100">
-                    <i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+        <form method="GET" action="{{ route('kabkota.index') }}" class="space-y-4">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                <!-- Search -->
+                <div class="md:col-span-2">
+                    <label for="search" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                        Cari Kabupaten/Kota
+                    </label>
+                    <div class="relative">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <i class="fas fa-search text-gray-400"></i>
+                        </div>
+                        <input type="text" 
+                               name="search" 
+                               id="search"
+                               value="{{ request('search') }}"
+                               placeholder="Cari nama kabupaten/kota atau provinsi..."
+                               class="pl-10 w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white">
+                    </div>
+                </div>
+
+                <!-- Filter Provinsi -->
+                <div>
+                    <label for="provinsi_id" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                        Provinsi
+                    </label>
+                    <select name="provinsi_id" 
+                            id="provinsi_id"
+                            class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white">
+                        <option value="">Semua Provinsi</option>
+                        @foreach($provinsis as $provinsi)
+                            <option value="{{ $provinsi->id }}" {{ request('provinsi_id') == $provinsi->id ? 'selected' : '' }}>
+                                {{ $provinsi->nama }}
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
+
+                <!-- Sort -->
+                <div>
+                    <label for="sort" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                        Urutkan
+                    </label>
+                    <select name="sort" 
+                            id="sort"
+                            class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white">
+                        <option value="nama" {{ request('sort') == 'nama' ? 'selected' : '' }}>Nama A-Z</option>
+                        <option value="nama" {{ request('sort') == 'nama' && request('direction') == 'desc' ? 'selected' : '' }}>Nama Z-A</option>
+                        <option value="ibukota" {{ request('sort') == 'ibukota' ? 'selected' : '' }}>Ibukota A-Z</option>
+                        <option value="ibukota" {{ request('sort') == 'ibukota' && request('direction') == 'desc' ? 'selected' : '' }}>Ibukota Z-A</option>
+                        <option value="created_at" {{ request('sort') == 'created_at' ? 'selected' : '' }}>Terbaru</option>
+                        <option value="created_at" {{ request('sort') == 'created_at' && request('direction') == 'desc' ? 'selected' : '' }}>Terlama</option>
+                    </select>
+                    <input type="hidden" name="direction" value="{{ request('direction', 'asc') }}">
                 </div>
             </div>
-            <div class="sm:w-48">
-                <select class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100">
-                    <option value="">Semua Provinsi</option>
-                    @foreach($provinsis as $provinsi)
-                        <option value="{{ $provinsi->id }}">{{ $provinsi->nama }}</option>
-                    @endforeach
-                </select>
+
+            <div class="flex flex-wrap gap-2">
+                <button type="submit" 
+                        class="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors duration-200">
+                    <i class="fas fa-search mr-2"></i>
+                    Cari
+                </button>
+
+                @if(request()->hasAny(['search', 'sort', 'provinsi_id']))
+                <a href="{{ route('kabkota.index') }}" 
+                   class="inline-flex items-center px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors duration-200">
+                    <i class="fas fa-times mr-2"></i>
+                    Reset
+                </a>
+                @endif
             </div>
-        </div>
+        </form>
     </div>
 
     <!-- Table -->

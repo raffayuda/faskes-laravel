@@ -24,22 +24,95 @@
                     <i class="fas fa-plus mr-2"></i>
                     Tambah Provinsi
                 </a>
+            </div>        </div>
+    </div>
+
+    <!-- Search and Filter Section -->
+    <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 border border-gray-200 dark:border-gray-700">
+        <form method="GET" action="{{ route('provinsi.index') }}" class="space-y-4">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <!-- Search -->
+                <div class="md:col-span-2">
+                    <label for="search" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                        Cari Provinsi
+                    </label>
+                    <div class="relative">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <i class="fas fa-search text-gray-400"></i>
+                        </div>
+                        <input type="text" 
+                               name="search" 
+                               id="search"
+                               value="{{ request('search') }}"
+                               placeholder="Cari nama provinsi atau ibukota..."
+                               class="pl-10 w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white">
+                    </div>
+                </div>
+
+                <!-- Sort -->
+                <div>
+                    <label for="sort" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                        Urutkan
+                    </label>
+                    <select name="sort" 
+                            id="sort"
+                            class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white">
+                        <option value="nama" {{ request('sort') == 'nama' ? 'selected' : '' }}>Nama A-Z</option>
+                        <option value="nama" {{ request('sort') == 'nama' && request('direction') == 'desc' ? 'selected' : '' }}>Nama Z-A</option>
+                        <option value="ibukota" {{ request('sort') == 'ibukota' ? 'selected' : '' }}>Ibukota A-Z</option>
+                        <option value="ibukota" {{ request('sort') == 'ibukota' && request('direction') == 'desc' ? 'selected' : '' }}>Ibukota Z-A</option>
+                        <option value="created_at" {{ request('sort') == 'created_at' ? 'selected' : '' }}>Terbaru</option>
+                        <option value="created_at" {{ request('sort') == 'created_at' && request('direction') == 'desc' ? 'selected' : '' }}>Terlama</option>
+                    </select>
+                    <input type="hidden" name="direction" value="{{ request('direction', 'asc') }}">
+                </div>
             </div>
-        </div>
+
+            <div class="flex flex-wrap gap-2">
+                <button type="submit" 
+                        class="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors duration-200">
+                    <i class="fas fa-search mr-2"></i>
+                    Cari
+                </button>
+
+                @if(request()->hasAny(['search', 'sort']))
+                <a href="{{ route('provinsi.index') }}" 
+                   class="inline-flex items-center px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors duration-200">
+                    <i class="fas fa-times mr-2"></i>
+                    Reset
+                </a>
+                @endif
+            </div>
+        </form>
     </div>
 
     <!-- Data Table -->
     <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 overflow-hidden">
         @if($provinsis->count() > 0)
         <div class="overflow-x-auto">
-            <table class="w-full">
-                <thead class="bg-gray-50 dark:bg-gray-700">
+            <table class="w-full">                <thead class="bg-gray-50 dark:bg-gray-700">
                     <tr>
                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                            Nama Provinsi
+                            <a href="{{ route('provinsi.index', array_merge(request()->query(), ['sort' => 'nama', 'direction' => request('sort') == 'nama' && request('direction') == 'asc' ? 'desc' : 'asc'])) }}" 
+                               class="flex items-center hover:text-gray-700 dark:hover:text-gray-200">
+                                Nama Provinsi
+                                @if(request('sort') == 'nama')
+                                    <i class="fas fa-sort-{{ request('direction') == 'asc' ? 'up' : 'down' }} ml-1"></i>
+                                @else
+                                    <i class="fas fa-sort ml-1 opacity-50"></i>
+                                @endif
+                            </a>
                         </th>
                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                            Ibukota
+                            <a href="{{ route('provinsi.index', array_merge(request()->query(), ['sort' => 'ibukota', 'direction' => request('sort') == 'ibukota' && request('direction') == 'asc' ? 'desc' : 'asc'])) }}" 
+                               class="flex items-center hover:text-gray-700 dark:hover:text-gray-200">
+                                Ibukota
+                                @if(request('sort') == 'ibukota')
+                                    <i class="fas fa-sort-{{ request('direction') == 'asc' ? 'up' : 'down' }} ml-1"></i>
+                                @else
+                                    <i class="fas fa-sort ml-1 opacity-50"></i>
+                                @endif
+                            </a>
                         </th>
                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
                             Koordinat

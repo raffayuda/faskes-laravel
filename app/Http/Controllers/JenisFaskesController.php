@@ -8,9 +8,28 @@ use Illuminate\Support\Facades\Auth;
 
 class JenisFaskesController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $jenisFaskes = JenisFaskes::with('faskes')->paginate(10);
+        $query = JenisFaskes::with('faskes');
+
+        // Search functionality
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->where('nama', 'like', "%{$search}%");
+        }
+
+        // Sorting functionality
+        $sortField = $request->get('sort', 'nama');
+        $sortDirection = $request->get('direction', 'asc');
+        
+        if (in_array($sortField, ['nama', 'created_at'])) {
+            $query->orderBy($sortField, $sortDirection);
+        } else {
+            $query->orderBy('nama', 'asc');
+        }
+
+        $jenisFaskes = $query->paginate(10)->withQueryString();
+        
         return view('admin.jenis_faskes.index', compact('jenisFaskes'));
     }
 

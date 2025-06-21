@@ -8,9 +8,28 @@ use Illuminate\Support\Facades\Auth;
 
 class KategoriController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $kategoris = Kategori::with('faskes')->paginate(10);
+        $query = Kategori::with('faskes');
+
+        // Search functionality
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->where('nama', 'like', "%{$search}%");
+        }
+
+        // Sorting functionality
+        $sortField = $request->get('sort', 'nama');
+        $sortDirection = $request->get('direction', 'asc');
+        
+        if (in_array($sortField, ['nama', 'created_at'])) {
+            $query->orderBy($sortField, $sortDirection);
+        } else {
+            $query->orderBy('nama', 'asc');
+        }
+
+        $kategoris = $query->paginate(10)->withQueryString();
+        
         return view('admin.kategori.index', compact('kategoris'));
     }
 

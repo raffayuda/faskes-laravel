@@ -25,10 +25,7 @@
                     <i class="fas fa-plus mr-2"></i>
                     Tambah Faskes
                 </a>
-                <button class="inline-flex items-center px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors duration-200">
-                    <i class="fas fa-file-import mr-2"></i>
-                    Import Data
-                </button>
+                
             </div>
             @endif
         </div>

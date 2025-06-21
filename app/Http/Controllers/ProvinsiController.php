@@ -8,9 +8,29 @@ use Illuminate\Support\Facades\Auth;
 
 class ProvinsiController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $provinsis = Provinsi::with('kabkotas')->paginate(10);
+        $query = Provinsi::with('kabkotas');
+
+        // Search functionality
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->where('nama', 'like', "%{$search}%")
+                  ->orWhere('ibukota', 'like', "%{$search}%");
+        }
+
+        // Sorting functionality
+        $sortField = $request->get('sort', 'nama');
+        $sortDirection = $request->get('direction', 'asc');
+        
+        if (in_array($sortField, ['nama', 'ibukota', 'created_at'])) {
+            $query->orderBy($sortField, $sortDirection);
+        } else {
+            $query->orderBy('nama', 'asc');
+        }
+
+        $provinsis = $query->paginate(10)->withQueryString();
+        
         return view('admin.provinsi.index', compact('provinsis'));
     }
 
@@ -63,8 +83,8 @@ class ProvinsiController extends Controller
         $validated = $request->validate([
             'nama' => 'required|string|max:45|unique:provinsi,nama,' . $provinsi->id,
             'ibukota' => 'nullable|string|max:45',
-            'latitude' => 'nullable|numeric|between:-90,90',
-            'longitude' => 'nullable|numeric|between:-180,180',
+            'latitude' => 'nullable|numeric',
+            'longitude' => 'nullable|numeric',
         ]);
 
         $provinsi->update($validated);

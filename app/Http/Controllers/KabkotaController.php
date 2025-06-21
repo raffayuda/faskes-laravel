@@ -9,10 +9,38 @@ use Illuminate\Support\Facades\Auth;
 
 class KabkotaController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $kabkotas = Kabkota::with(['provinsi', 'faskes'])->paginate(10);
+        $query = Kabkota::with(['provinsi', 'faskes']);
+
+        // Search functionality
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->where('nama', 'like', "%{$search}%")
+                  ->orWhere('ibukota', 'like', "%{$search}%")
+                  ->orWhereHas('provinsi', function($q) use ($search) {
+                      $q->where('nama', 'like', "%{$search}%");
+                  });
+        }
+
+        // Filter by provinsi
+        if ($request->filled('provinsi_id')) {
+            $query->where('provinsi_id', $request->provinsi_id);
+        }
+
+        // Sorting functionality
+        $sortField = $request->get('sort', 'nama');
+        $sortDirection = $request->get('direction', 'asc');
+        
+        if (in_array($sortField, ['nama', 'ibukota', 'created_at'])) {
+            $query->orderBy($sortField, $sortDirection);
+        } else {
+            $query->orderBy('nama', 'asc');
+        }
+
+        $kabkotas = $query->paginate(10)->withQueryString();
         $provinsis = Provinsi::all();
+        
         return view('admin.kabkota.index', compact('kabkotas', 'provinsis'));
     }
 
