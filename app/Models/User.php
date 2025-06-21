@@ -78,4 +78,20 @@ class User extends Authenticatable
     {
         return $this->favoritesFaskes()->where('faskes_id', $faskesId)->exists();
     }
+
+    /**
+     * User's ratings for faskes
+     */
+    public function faskesRatings()
+    {
+        return $this->hasMany(FaskesRating::class);
+    }
+
+    /**
+     * Get user's rating for a specific faskes
+     */
+    public function getRatingForFaskes($faskesId)
+    {
+        return $this->faskesRatings()->where('faskes_id', $faskesId)->first();
+    }
 }

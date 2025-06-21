@@ -48,4 +48,28 @@ class Faskes extends Model
     {
         return $this->belongsToMany(User::class, 'faskes_favorites')->withTimestamps();
     }
+
+    /**
+     * Ratings for this faskes
+     */
+    public function ratings()
+    {
+        return $this->hasMany(FaskesRating::class);
+    }
+
+    /**
+     * Get average rating
+     */
+    public function getAverageRating()
+    {
+        return $this->ratings()->avg('rating');
+    }
+
+    /**
+     * Get total ratings count
+     */
+    public function getTotalRatings()
+    {
+        return $this->ratings()->count();
+    }
 }

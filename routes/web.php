@@ -12,6 +12,7 @@ use App\Http\Controllers\KategoriController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\FavoriteController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\FaskesRatingController;
 use App\Livewire\Home;
 use App\Livewire\Layanan;
 use App\Livewire\Tentang;
@@ -47,6 +48,10 @@ Route::middleware('auth')->group(function () {
     Route::get('/favorites', [FavoriteController::class, 'index'])->name('favorites.index');
     Route::post('/favorites/{faskes}/toggle', [FavoriteController::class, 'toggle'])->name('favorites.toggle');
     Route::delete('/favorites/{faskes}', [FavoriteController::class, 'destroy'])->name('favorites.destroy');
+    
+    // Rating Features
+    Route::post('/faskes/{faskes}/rating', [FaskesRatingController::class, 'store'])->name('faskes.rating.store');
+    Route::delete('/faskes/{faskes}/rating', [FaskesRatingController::class, 'destroy'])->name('faskes.rating.destroy');
     
     // Profile Features
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

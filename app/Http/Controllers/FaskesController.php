@@ -8,15 +8,53 @@ use App\Models\JenisFaskes;
 use App\Models\Kategori;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Provinsi;
 
 class FaskesController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $faskes = Faskes::with(['kabkota.provinsi', 'jenisFaskes', 'kategori'])
-            ->paginate(10);
+        $query = Faskes::with(['kabkota.provinsi', 'jenisFaskes', 'kategori']);
 
-        return view('faskes.index', compact('faskes'));
+        // Search by name
+        if ($request->filled('search')) {
+            $query->where('nama', 'like', '%' . $request->search . '%');
+        }
+
+        // Filter by provinsi
+        if ($request->filled('provinsi_id')) {
+            $query->whereHas('kabkota', function($q) use ($request) {
+                $q->where('provinsi_id', $request->provinsi_id);
+            });
+        }
+
+        // Filter by jenis faskes
+        if ($request->filled('jenis_faskes_id')) {
+            $query->where('jenis_faskes_id', $request->jenis_faskes_id);
+        }
+
+        // Sorting
+        $sort = $request->get('sort', 'nama');
+        $direction = $request->get('direction', 'asc');
+        
+        $allowedSorts = ['nama', 'jenis_faskes_id', 'created_at'];
+        if (in_array($sort, $allowedSorts)) {
+            if ($sort == 'jenis_faskes_id') {
+                $query->join('jenis_faskes', 'faskes.jenis_faskes_id', '=', 'jenis_faskes.id')
+                      ->orderBy('jenis_faskes.nama', $direction)
+                      ->select('faskes.*');
+            } else {
+                $query->orderBy($sort, $direction);
+            }
+        }
+
+        $faskes = $query->paginate(10)->appends($request->all());
+
+        // Get filter options
+        $provinsiList = Provinsi::orderBy('nama')->get();
+        $jenisFaskesList = JenisFaskes::orderBy('nama')->get();
+
+        return view('faskes.index', compact('faskes', 'provinsiList', 'jenisFaskesList'));
     }
 
     public function create()

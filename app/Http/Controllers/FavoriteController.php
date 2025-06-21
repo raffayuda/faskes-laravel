@@ -12,7 +12,7 @@ class FavoriteController extends Controller
     public function index()
     {
         $favorites = Auth::user()->favoritesFaskes()
-            ->with(['kabkota.provinsi', 'jenisFaskes', 'kategori'])
+            ->with(['kabkota.provinsi', 'jenisFaskes', 'kategori', 'ratings'])
             ->paginate(10);
 
         return view('favorites.index', compact('favorites'));
