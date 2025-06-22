@@ -17,12 +17,20 @@ use App\Livewire\Home;
 use App\Livewire\Layanan;
 use App\Livewire\Tentang;
 use App\Livewire\Kontak;
+use App\Livewire\Faskes;
+use App\Livewire\Favorit;
 
 // Landing Page Routes (accessible to everyone)
 Route::get('/', Home::class)->name('landing.home');
 Route::get('/tentang', Tentang::class)->name('landing.tentang');
 Route::get('/layanan', Layanan::class)->name('landing.layanan');
 Route::get('/kontak', Kontak::class)->name('landing.kontak');
+Route::get('/faskes-landing', Faskes::class)->name('landing.faskes');
+
+// Landing Page Routes (requires authentication)
+Route::middleware('auth')->group(function () {
+    Route::get('/favorit-landing', Favorit::class)->name('landing.favorit');
+});
 
 
 // Auth Routes

@@ -44,7 +44,7 @@
                                 </div>
                                 <div>
                                     <h3 class="text-xl font-bold text-gray-900 mb-2">Alamat Kantor</h3>
-                                    <p class="text-gray-700">Jl. Kesehatan Digital No. 123<br>Jakarta Pusat, DKI Jakarta 10110<br>Indonesia</p>
+                                    <p class="text-gray-700">Kec. Pamijahan <br> Kabupaten Bogor <br> Jawa Barat 16810</p>
                                 </div>
                             </div>
                         </div>

@@ -23,7 +23,14 @@ class AuthController extends Controller
 
         if (Auth::attempt($credentials, $request->boolean('remember'))) {
             $request->session()->regenerate();
-            return redirect()->intended('/dashboard');
+            
+            // Redirect based on user role
+            $user = Auth::user();
+            if ($user->role === 'admin') {
+                return redirect()->intended('/dashboard');
+            } else {
+                return redirect()->intended('/');
+            }
         }
 
         return back()->withErrors([
@@ -53,7 +60,7 @@ class AuthController extends Controller
 
         Auth::login($user);
 
-        return redirect('/dashboard');
+        return redirect('/')->with('success', 'Akun berhasil dibuat! Selamat datang di SI Faskes.');
     }
 
     public function logout(Request $request)
@@ -61,6 +68,6 @@ class AuthController extends Controller
         Auth::logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
-        return redirect('/login');
+        return redirect('/')->with('success', 'Anda berhasil logout.');
     }
 }

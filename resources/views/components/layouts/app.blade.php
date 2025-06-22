@@ -1,11 +1,68 @@
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 
-<head>
-    <meta charset="utf-8">
+<head>    <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ $title ?? 'SI Faskes' }}</title>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Custom CSS for smooth animations -->
+    <style>
+        /* Modal animations */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        @keyframes zoomIn {
+            from { 
+                opacity: 0; 
+                transform: scale(0.95) translate(-50%, -50%); 
+            }
+            to { 
+                opacity: 1; 
+                transform: scale(1) translate(-50%, -50%); 
+            }
+        }
+        
+        .animate-in {
+            animation: fadeIn 0.3s ease-out;
+        }
+        
+        .fade-in {
+            animation: fadeIn 0.3s ease-out;
+        }
+        
+        .zoom-in-95 {
+            animation: zoomIn 0.3s ease-out;
+        }
+        
+        /* Backdrop blur effect */
+        .backdrop-blur-sm {
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
+        }
+        
+        /* Smooth transitions */
+        .transition-all {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        /* Heart animation */
+        .heart-beat {
+            animation: heartBeat 0.3s ease-in-out;
+        }
+        
+        @keyframes heartBeat {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.3); }
+            100% { transform: scale(1); }
+        }
+    </style>
+    
+    @livewireStyles
 </head>
 
 <body class="min-h-screen flex flex-col bg-gray-50"> <!-- Navbar -->
@@ -42,21 +99,38 @@
                             <div
                                 class="absolute inset-0 bg-gradient-to-r from-white/0 to-white/10 translate-x-[-100%] group-hover:translate-x-0 transition-transform duration-500">
                             </div>
-                        </a>
-                        <a href="{{ route('landing.layanan') }}"
+                        </a>                        <a href="{{ route('landing.layanan') }}"
                             class="nav-link {{ request()->routeIs('landing.layanan') ? 'active text-white bg-blue-500/50 border border-white/20' : 'text-blue-100' }} hover:text-white hover:bg-white/20 px-4 py-2 rounded-lg text-sm font-medium transition-all duration-300 hover:scale-105 relative overflow-hidden group">
                             <span class="relative z-10">Layanan</span>
                             <div
                                 class="absolute inset-0 bg-gradient-to-r from-white/0 to-white/10 translate-x-[-100%] group-hover:translate-x-0 transition-transform duration-500">
                             </div>
-                        </a> <a href="{{ route('landing.kontak') }}"
+                        </a>                        <a href="{{ route('landing.faskes') }}"
+                            class="nav-link {{ request()->routeIs('landing.faskes') ? 'active text-white bg-blue-500/50 border border-white/20' : 'text-blue-100' }} hover:text-white hover:bg-white/20 px-4 py-2 rounded-lg text-sm font-medium transition-all duration-300 hover:scale-105 relative overflow-hidden group">
+                            <span class="relative z-10">Faskes</span>
+                            <div
+                                class="absolute inset-0 bg-gradient-to-r from-white/0 to-white/10 translate-x-[-100%] group-hover:translate-x-0 transition-transform duration-500">
+                            </div>
+                        </a>
+                        @if (auth()->check())
+                            <a href="{{ route('landing.favorit') }}"
+                                class="nav-link {{ request()->routeIs('landing.favorit') ? 'active text-white bg-blue-500/50 border border-white/20' : 'text-blue-100' }} hover:text-white hover:bg-white/20 px-4 py-2 rounded-lg text-sm font-medium transition-all duration-300 hover:scale-105 relative overflow-hidden group">
+                                <span class="relative z-10">
+                                    <i class="fas fa-heart mr-1"></i>
+                                    Favorit
+                                </span>
+                                <div
+                                    class="absolute inset-0 bg-gradient-to-r from-white/0 to-white/10 translate-x-[-100%] group-hover:translate-x-0 transition-transform duration-500">
+                                </div>
+                            </a>
+                        @endif<a href="{{ route('landing.kontak') }}"
                             class="nav-link {{ request()->routeIs('landing.kontak') ? 'active text-white bg-blue-500/50 border border-white/20' : 'text-blue-100' }} hover:text-white hover:bg-white/20 px-4 py-2 rounded-lg text-sm font-medium transition-all duration-300 hover:scale-105 relative overflow-hidden group">
                             <span class="relative z-10">Kontak</span>
                             <div
                                 class="absolute inset-0 bg-gradient-to-r from-white/0 to-white/10 translate-x-[-100%] group-hover:translate-x-0 transition-transform duration-500">
                             </div>
                         </a>
-                        @if (auth()->check())
+                        @if (auth()->check() && auth()->user()->is_admin)
                             <a href="{{ route('dashboard') }}"
                                 class="nav-link {{ request()->routeIs('dashboard') ? 'active text-white bg-blue-500/50 border border-white/20' : 'text-blue-100' }} hover:text-white hover:bg-white/20 px-4 py-2 rounded-lg text-sm font-medium transition-all duration-300 hover:scale-105 relative overflow-hidden group">
                                 <span class="relative z-10">Dashboard</span>
@@ -64,14 +138,25 @@
                                     class="absolute inset-0 bg-gradient-to-r from-white/0 to-white/10 translate-x-[-100%] group-hover:translate-x-0 transition-transform duration-500">
                                 </div>
                             </a>
+                        @elseif(!auth()->check())
+                        <a href="{{ route('login') }}"
+                            class="nav-link {{ request()->routeIs('login') ? 'active text-white bg-blue-500/50 border border-white/20' : 'text-blue-100' }} hover:text-white hover:bg-white/20 px-4 py-2 rounded-lg text-sm font-medium transition-all duration-300 hover:scale-105 relative overflow-hidden group">
+                            <span class="relative z-10">Login</span>
+                            <div
+                                class="absolute inset-0 bg-gradient-to-r from-white/0 to-white/10 translate-x-[-100%] group-hover:translate-x-0 transition-transform duration-500">
+                            </div>
+                        </a>
                         @else
-                            <a href="{{ route('login') }}"
-                                class="nav-link {{ request()->routeIs('login') ? 'active text-white bg-blue-500/50 border border-white/20' : 'text-blue-100' }} hover:text-white hover:bg-white/20 px-4 py-2 rounded-lg text-sm font-medium transition-all duration-300 hover:scale-105 relative overflow-hidden group">
-                                <span class="relative z-10">Login</span>
+                        <form action="{{ route('logout') }}" method="POST" class="inline">
+                            @csrf
+                            <button type="submit"
+                                class="nav-link {{ request()->routeIs('logout') ? 'active text-white bg-blue-500/50 border border-white/20' : 'text-blue-100' }} hover:text-white hover:bg-white/20 px-4 py-2 rounded-lg text-sm font-medium transition-all duration-300 hover:scale-105 relative overflow-hidden group">
+                                <span class="relative z-10">Logout</span>
                                 <div
                                     class="absolute inset-0 bg-gradient-to-r from-white/0 to-white/10 translate-x-[-100%] group-hover:translate-x-0 transition-transform duration-500">
                                 </div>
-                            </a>
+                            </button>
+                        </form>
                         @endif
                     </div>
                 </div>
@@ -108,14 +193,32 @@
                                 class="w-2 h-2 {{ request()->routeIs('landing.tentang') ? 'bg-white' : 'bg-blue-300 opacity-50' }} rounded-full mr-3"></span>
                             Tentang
                         </div>
-                    </a> <a href="{{ route('landing.layanan') }}"
+                    </a>                    <a href="{{ route('landing.layanan') }}"
                         class="mobile-nav-link {{ request()->routeIs('landing.layanan') ? 'active text-white bg-blue-500/50 border border-white/20' : 'text-blue-100 hover:text-white' }} block px-4 py-3 rounded-lg text-base font-medium transition-all duration-300 hover:bg-white/20 hover:translate-x-2">
                         <div class="flex items-center">
                             <span
                                 class="w-2 h-2 {{ request()->routeIs('landing.layanan') ? 'bg-white' : 'bg-blue-300 opacity-50' }} rounded-full mr-3"></span>
                             Layanan
                         </div>
-                    </a> <a href="{{ route('landing.kontak') }}"
+                    </a>                    <a href="{{ route('landing.faskes') }}"
+                        class="mobile-nav-link {{ request()->routeIs('landing.faskes') ? 'active text-white bg-blue-500/50 border border-white/20' : 'text-blue-100 hover:text-white' }} block px-4 py-3 rounded-lg text-base font-medium transition-all duration-300 hover:bg-white/20 hover:translate-x-2">
+                        <div class="flex items-center">
+                            <span
+                                class="w-2 h-2 {{ request()->routeIs('landing.faskes') ? 'bg-white' : 'bg-blue-300 opacity-50' }} rounded-full mr-3"></span>
+                            Faskes
+                        </div>
+                    </a>
+                    @if (auth()->check())
+                        <a href="{{ route('landing.favorit') }}"
+                            class="mobile-nav-link {{ request()->routeIs('landing.favorit') ? 'active text-white bg-blue-500/50 border border-white/20' : 'text-blue-100 hover:text-white' }} block px-4 py-3 rounded-lg text-base font-medium transition-all duration-300 hover:bg-white/20 hover:translate-x-2">
+                            <div class="flex items-center">
+                                <span
+                                    class="w-2 h-2 {{ request()->routeIs('landing.favorit') ? 'bg-white' : 'bg-blue-300 opacity-50' }} rounded-full mr-3"></span>
+                                <i class="fas fa-heart mr-2"></i>
+                                Favorit
+                            </div>
+                        </a>
+                    @endif<a href="{{ route('landing.kontak') }}"
                         class="mobile-nav-link {{ request()->routeIs('landing.kontak') ? 'active text-white bg-blue-500/50 border border-white/20' : 'text-blue-100 hover:text-white' }} block px-4 py-3 rounded-lg text-base font-medium transition-all duration-300 hover:bg-white/20 hover:translate-x-2">
                         <div class="flex items-center">
                             <span
@@ -171,8 +274,7 @@
 
                 <!-- Menu Section -->
                 <div>
-                    <h3 class="text-lg font-semibold mb-6 text-blue-400">Menu Utama</h3>
-                    <ul class="space-y-3">
+                    <h3 class="text-lg font-semibold mb-6 text-blue-400">Menu Utama</h3>                    <ul class="space-y-3">
                         <li><a href="{{ route('landing.home') }}"
                                 class="text-gray-300 hover:text-white transition duration-300 flex items-center"><span
                                     class="mr-2">→</span>Beranda</a></li>
@@ -181,11 +283,15 @@
                                     class="mr-2">→</span>Tentang Kami</a></li>
                         <li><a href="{{ route('landing.layanan') }}"
                                 class="text-gray-300 hover:text-white transition duration-300 flex items-center"><span
-                                    class="mr-2">→</span>Layanan</a></li>
-                        <li><a href="#layanan"
+                                    class="mr-2">→</span>Layanan</a></li>                        <li><a href="{{ route('landing.faskes') }}"
                                 class="text-gray-300 hover:text-white transition duration-300 flex items-center"><span
-                                    class="mr-2">→</span>Layanan</a></li>
-                        <li><a href="#kontak"
+                                    class="mr-2">→</span>Faskes</a></li>
+                        @if (auth()->check())
+                            <li><a href="{{ route('landing.favorit') }}"
+                                    class="text-gray-300 hover:text-white transition duration-300 flex items-center"><span
+                                        class="mr-2">→</span>Favorit</a></li>
+                        @endif
+                        <li><a href="{{ route('landing.kontak') }}"
                                 class="text-gray-300 hover:text-white transition duration-300 flex items-center"><span
                                     class="mr-2">→</span>Kontak</a></li>
                     </ul>
@@ -236,7 +342,80 @@
                 </div>
             </div>
         </div>
-    </footer>
+    </footer>    <!-- Toast Notifications -->
+    <div x-data="{ 
+        messages: [],
+        showToast(message, type = 'success') {
+            const id = Date.now();
+            this.messages.push({ id, message, type });
+            setTimeout(() => {
+                this.removeToast(id);
+            }, 3000);
+        },
+        removeToast(id) {
+            this.messages = this.messages.filter(m => m.id !== id);
+        }
+    }"
+    @favorite-toggled.window="showToast($event.detail.action === 'added' ? 'Ditambahkan ke favorit' : 'Dihapus dari favorit', 'success')"
+    @show-toast.window="showToast($event.detail.message, $event.detail.type)"
+    class="fixed top-4 right-4 z-[9999]">
+        <template x-for="message in messages" :key="message.id">
+            <div x-show="true"
+                 x-transition:enter="transform ease-out duration-300 transition"
+                 x-transition:enter-start="translate-y-2 opacity-0 sm:translate-y-0 sm:translate-x-2"
+                 x-transition:enter-end="translate-y-0 opacity-100 sm:translate-x-0"
+                 x-transition:leave="transition ease-in duration-100"
+                 x-transition:leave-start="opacity-100"
+                 x-transition:leave-end="opacity-0"
+                 class="mb-4 max-w-sm w-full bg-white shadow-lg rounded-lg pointer-events-auto ring-1 ring-black ring-opacity-5 overflow-hidden">
+                <div class="p-4">
+                    <div class="flex items-start">
+                        <div class="flex-shrink-0">
+                            <svg x-show="message.type === 'success'" class="h-6 w-6 text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                            <svg x-show="message.type === 'error'" class="h-6 w-6 text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16c-.77.833.192 2.5 1.732 2.5z" />
+                            </svg>
+                        </div>
+                        <div class="ml-3 w-0 flex-1 pt-0.5">
+                            <p class="text-sm font-medium text-gray-900" x-text="message.message"></p>
+                        </div>
+                        <div class="ml-4 flex-shrink-0 flex">
+                            <button @click="removeToast(message.id)" class="bg-white rounded-md inline-flex text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                                <span class="sr-only">Close</span>
+                                <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd" />
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </template>
+    </div>
+
+    <!-- Flash Messages -->
+    @if(session('message'))
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                window.dispatchEvent(new CustomEvent('show-toast', {
+                    detail: { message: '{{ session('message') }}', type: 'success' }
+                }));
+            });
+        </script>
+    @endif
+
+    @if(session('error'))
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                window.dispatchEvent(new CustomEvent('show-toast', {
+                    detail: { message: '{{ session('error') }}', type: 'error' }
+                }));
+            });
+        </script>
+    @endif
+
     <script>
         function toggleMobileMenu() {
             const menu = document.getElementById('mobile-menu');
@@ -251,9 +430,9 @@
             } else {
                 icon.innerHTML =
                     '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>';
-            }
-        }
+            }        }
     </script>
+    @livewireScripts
 </body>
 
 </html>
