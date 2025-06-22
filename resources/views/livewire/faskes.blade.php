@@ -324,10 +324,10 @@
                         <i class="fas fa-heart mr-2"></i>
                         Lihat Favorit Saya
                     </a>
-                    <a href="{{ route('dashboard') }}" 
+                    <a href="{{ route('landing.layanan') }}" 
                        class="inline-flex items-center px-8 py-3 border-2 border-white text-white font-semibold rounded-lg hover:bg-white hover:text-blue-600 transition-colors">
-                        <i class="fas fa-tachometer-alt mr-2"></i>
-                        Dashboard
+                        <i class="fas fa-concierge-bell mr-2"></i>
+                        Layanan Kami
                     </a>
                 @else
                     <a href="{{ route('register') }}" 
