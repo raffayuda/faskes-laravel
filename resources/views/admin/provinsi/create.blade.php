@@ -98,26 +98,7 @@
                 </div>
             </div>
             
-            <div class="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4">
-                <div class="flex">
-                    <div class="flex-shrink-0">
-                        <i class="fas fa-info-circle text-blue-400"></i>
-                    </div>
-                    <div class="ml-3">
-                        <h3 class="text-sm font-medium text-blue-800 dark:text-blue-200">
-                            Tips Koordinat
-                        </h3>
-                        <div class="mt-2 text-sm text-blue-700 dark:text-blue-300">
-                            <ul class="list-disc list-inside space-y-1">
-                                <li>Latitude: -90 sampai 90 (negatif untuk selatan khatulistiwa)</li>
-                                <li>Longitude: -180 sampai 180 (negatif untuk barat Greenwich)</li>
-                                <li>Gunakan Google Maps untuk mendapatkan koordinat yang akurat</li>
-                                <li>Format desimal (contoh: -6.2088, 106.8456)</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            
 
             <!-- Actions -->
             <div class="flex items-center justify-end space-x-3 pt-6 border-t border-gray-200 dark:border-gray-700">
